@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Kitelink
+GenericName=Google Drive Client
+Comment=Connect Google Drive to your Files app
+Exec=kitelink
+Icon=kitelink
+Terminal=false
+Type=Application
+Categories=Network;FileTransfer;GNOME;
+StartupNotify=true
+Keywords=drive;google;sync;cloud;

@@ -22,11 +22,11 @@ description: "Task list for Kitelink Phase 1 MVP"
 
 **Purpose**: Project skeleton and tooling
 
-- [ ] T001 Create source tree per plan (`src/kitelink/{app,service,ipc,auth,util}`, `extensions/nautilus/`, `packaging/debian/`, `systemd/user/`, `tests/{unit,contract,integration}`)
-- [ ] T002 Initialize Python project packaging in `pyproject.toml` with GTK/PyGObject, dbus, libsecret, pytest dependencies
-- [ ] T003 [P] Add lint/format config in `pyproject.toml` / `ruff.toml` (or equivalent)
-- [ ] T004 [P] Add `.gitignore` entries for Python, secrets, rclone conf copies, and build artifacts (keep Spec Kit notes in mind for `.cursor/`)
-- [ ] T005 [P] Add placeholder desktop entry template in `packaging/debian/kitelink.desktop`
+- [x] T001 Create source tree per plan (`src/kitelink/{app,service,ipc,auth,util}`, `extensions/nautilus/`, `packaging/debian/`, `systemd/user/`, `tests/{unit,contract,integration}`)
+- [x] T002 Initialize Python project packaging in `pyproject.toml` with GTK/PyGObject, dbus, libsecret, pytest dependencies
+- [x] T003 [P] Add lint/format config in `pyproject.toml` / `ruff.toml` (or equivalent)
+- [x] T004 [P] Add `.gitignore` entries for Python, secrets, rclone conf copies, and build artifacts (keep Spec Kit notes in mind for `.cursor/`)
+- [x] T005 [P] Add placeholder desktop entry template in `packaging/debian/kitelink.desktop`
 
 ---
 
@@ -36,15 +36,15 @@ description: "Task list for Kitelink Phase 1 MVP"
 
 **⚠️ CRITICAL**: No user story work until this phase completes
 
-- [ ] T006 Define shared enums/models in `src/kitelink/service/state.py` (auth, connection, path state, preferences)
-- [ ] T007 [P] Implement preferences load/save under XDG in `src/kitelink/util/preferences.py`
-- [ ] T008 [P] Implement user-safe logging helpers in `src/kitelink/util/logging.py` (never log secrets)
-- [ ] T009 Implement D-Bus interface skeleton matching `specs/001-kitelink-mvp/contracts/dbus-org.kitelink.Service1.xml` in `src/kitelink/ipc/service1.py`
-- [ ] T010 Implement Kitelink user service entrypoint that owns the D-Bus name in `src/kitelink/service/main.py`
-- [ ] T011 [P] Create systemd user unit template in `systemd/user/kitelink.service`
-- [ ] T012 Implement rclone adapter stubs (mount lifecycle + RC client interfaces) in `src/kitelink/service/adapters/rclone/`
-- [ ] T013 Implement libsecret-backed credential store API in `src/kitelink/auth/keyring_store.py`
-- [ ] T014 [P] Add contract test scaffolding for D-Bus method presence in `tests/contract/test_service1_iface.py`
+- [x] T006 Define shared enums/models in `src/kitelink/service/state.py` (auth, connection, path state, preferences)
+- [x] T007 [P] Implement preferences load/save under XDG in `src/kitelink/util/preferences.py`
+- [x] T008 [P] Implement user-safe logging helpers in `src/kitelink/util/logging.py` (never log secrets)
+- [x] T009 Implement D-Bus interface skeleton matching `specs/001-kitelink-mvp/contracts/dbus-org.kitelink.Service1.xml` in `src/kitelink/ipc/service1.py`
+- [x] T010 Implement Kitelink user service entrypoint that owns the D-Bus name in `src/kitelink/service/main.py`
+- [x] T011 [P] Create systemd user unit template in `systemd/user/kitelink.service`
+- [x] T012 Implement rclone adapter stubs (mount lifecycle + RC client interfaces) in `src/kitelink/service/adapters/rclone/`
+- [x] T013 Implement libsecret-backed credential store API in `src/kitelink/auth/keyring_store.py`
+- [x] T014 [P] Add contract test scaffolding for D-Bus method presence in `tests/contract/test_service1_iface.py`
 
 **Checkpoint**: Service starts, claims D-Bus name, answers stub methods; no Google mount required yet
 
@@ -58,14 +58,14 @@ description: "Task list for Kitelink Phase 1 MVP"
 
 ### Implementation for User Story 1
 
-- [ ] T015 [US1] Implement OAuth loopback sign-in flow in `src/kitelink/auth/oauth.py`
-- [ ] T016 [US1] Wire `StartSignIn` / `GetAuthStatus` / `SignOut` (partial) in `src/kitelink/ipc/service1.py` to auth modules
-- [ ] T017 [US1] Implement rclone remote ensure + mount start/stop in `src/kitelink/service/adapters/rclone/mount.py`
-- [ ] T018 [US1] Generate/manage mount systemd user unit with localhost RC flags in `src/kitelink/service/adapters/rclone/unit.py`
-- [ ] T019 [US1] Implement connection status + `OpenMountpoint` in `src/kitelink/service/connection.py`
-- [ ] T020 [US1] Build onboarding/sign-in GTK window in `src/kitelink/app/onboarding.py`
-- [ ] T021 [US1] Wire app launch to ensure user service is running in `src/kitelink/app/main.py`
-- [ ] T022 [US1] Persist session email + map tokens into rclone config securely via adapter in `src/kitelink/service/adapters/rclone/auth_bridge.py`
+- [x] T015 [US1] Implement OAuth loopback sign-in flow in `src/kitelink/auth/oauth.py`
+- [x] T016 [US1] Wire `StartSignIn` / `GetAuthStatus` / `SignOut` (partial) in `src/kitelink/ipc/service1.py` to auth modules
+- [x] T017 [US1] Implement rclone remote ensure + mount start/stop in `src/kitelink/service/adapters/rclone/mount.py`
+- [x] T018 [US1] Generate/manage mount systemd user unit with localhost RC flags in `src/kitelink/service/adapters/rclone/unit.py`
+- [x] T019 [US1] Implement connection status + `OpenMountpoint` in `src/kitelink/service/connection.py`
+- [x] T020 [US1] Build onboarding/sign-in GTK window in `src/kitelink/app/onboarding.py`
+- [x] T021 [US1] Wire app launch to ensure user service is running in `src/kitelink/app/main.py`
+- [x] T022 [US1] Persist session email + map tokens into rclone config securely via adapter in `src/kitelink/service/adapters/rclone/auth_bridge.py`
 
 **Checkpoint**: US1 demoable — signed-in mount without terminal
 
@@ -79,12 +79,12 @@ description: "Task list for Kitelink Phase 1 MVP"
 
 ### Implementation for User Story 2
 
-- [ ] T023 [P] [US2] Implement transfer filter (min bytes, min duration, aggregate) in `src/kitelink/service/transfer_filter.py`
-- [ ] T024 [P] [US2] Add unit tests for filter edge cases in `tests/unit/test_transfer_filter.py`
-- [ ] T025 [US2] Implement RC poller producing `TransferActivity` in `src/kitelink/service/adapters/rclone/rc_stats.py`
-- [ ] T026 [US2] Expose `GetAggregatedTransfers` + `TransfersChanged` signal in `src/kitelink/ipc/service1.py`
-- [ ] T027 [US2] Implement tray indicator UI (idle/syncing/error + headline) in `src/kitelink/app/tray.py`
-- [ ] T028 [US2] Ensure default UX never uses per-file `notify-send` storms (document + code path) in `src/kitelink/app/notifications.py`
+- [x] T023 [P] [US2] Implement transfer filter (min bytes, min duration, aggregate) in `src/kitelink/service/transfer_filter.py`
+- [x] T024 [P] [US2] Add unit tests for filter edge cases in `tests/unit/test_transfer_filter.py`
+- [x] T025 [US2] Implement RC poller producing `TransferActivity` in `src/kitelink/service/adapters/rclone/rc_stats.py`
+- [x] T026 [US2] Expose `GetAggregatedTransfers` + `TransfersChanged` signal in `src/kitelink/ipc/service1.py`
+- [x] T027 [US2] Implement tray indicator UI (idle/syncing/error + headline) in `src/kitelink/app/tray.py`
+- [x] T028 [US2] Ensure default UX never uses per-file `notify-send` storms (document + code path) in `src/kitelink/app/notifications.py`
 
 **Checkpoint**: US2 validated against quickstart Q2
 
@@ -98,11 +98,11 @@ description: "Task list for Kitelink Phase 1 MVP"
 
 ### Implementation for User Story 3
 
-- [ ] T029 [US3] Implement path-state heuristics from VFS cache + transferring set in `src/kitelink/service/adapters/rclone/path_state.py`
-- [ ] T030 [US3] Implement `GetPathState` + `PathStateMayHaveChanged` in `src/kitelink/ipc/service1.py`
-- [ ] T031 [P] [US3] Create Nautilus extension calling D-Bus in `extensions/nautilus/kitelink.py`
-- [ ] T032 [P] [US3] Add emblem icon assets placeholders under `assets/brand/emblems/` (swap when brand kit arrives)
-- [ ] T033 [US3] Document approximation limits in-app help blurb in `src/kitelink/app/help_copy.py`
+- [x] T029 [US3] Implement path-state heuristics from VFS cache + transferring set in `src/kitelink/service/adapters/rclone/path_state.py`
+- [x] T030 [US3] Implement `GetPathState` + `PathStateMayHaveChanged` in `src/kitelink/ipc/service1.py`
+- [x] T031 [P] [US3] Create Nautilus extension calling D-Bus in `extensions/nautilus/kitelink.py`
+- [x] T032 [P] [US3] Add emblem icon assets placeholders under `assets/brand/emblems/` (swap when brand kit arrives)
+- [x] T033 [US3] Document approximation limits in-app help blurb in `src/kitelink/app/help_copy.py`
 
 **Checkpoint**: US3 emblems visible without blocking Nautilus
 
@@ -116,11 +116,11 @@ description: "Task list for Kitelink Phase 1 MVP"
 
 ### Implementation for User Story 4
 
-- [ ] T034 [US4] Build preferences dialog (cache size, filter thresholds) in `src/kitelink/app/preferences.py`
-- [ ] T035 [US4] Implement `GetPreferences` / `SetPreferences` applying to rclone unit/restart policy in `src/kitelink/service/preferences_apply.py`
-- [ ] T036 [US4] Implement user-safe `GetDiagnostics` JSON in `src/kitelink/service/diagnostics.py`
-- [ ] T037 [US4] Complete sign-out: stop mount, clear keyring, clear adapter secrets in `src/kitelink/auth/session.py`
-- [ ] T038 [US4] Add tray menu actions (open folder, preferences, diagnostics, sign out, quit) in `src/kitelink/app/tray.py`
+- [x] T034 [US4] Build preferences dialog (cache size, filter thresholds) in `src/kitelink/app/preferences.py`
+- [x] T035 [US4] Implement `GetPreferences` / `SetPreferences` applying to rclone unit/restart policy in `src/kitelink/service/preferences_apply.py`
+- [x] T036 [US4] Implement user-safe `GetDiagnostics` JSON in `src/kitelink/service/diagnostics.py`
+- [x] T037 [US4] Complete sign-out: stop mount, clear keyring, clear adapter secrets in `src/kitelink/auth/session.py`
+- [x] T038 [US4] Add tray menu actions (open folder, preferences, diagnostics, sign out, quit) in `src/kitelink/app/tray.py`
 
 **Checkpoint**: US4 matches quickstart Q4
 
@@ -134,11 +134,11 @@ description: "Task list for Kitelink Phase 1 MVP"
 
 ### Implementation for User Story 5
 
-- [ ] T039 [US5] Author Debian packaging metadata in `packaging/debian/control` and related files
-- [ ] T040 [US5] Install systemd user units and Nautilus extension paths via package rules in `packaging/debian/kitelink.install`
-- [ ] T041 [US5] Declare rclone dependency or bundle strategy + minimum version gate in `packaging/debian/control` / docs
-- [ ] T042 [US5] Add package build instructions in `packaging/README.md`
-- [ ] T043 [US5] Smoke-test install script/checklist linked from `specs/001-kitelink-mvp/quickstart.md` scenario Q5
+- [x] T039 [US5] Author Debian packaging metadata in `packaging/debian/control` and related files
+- [x] T040 [US5] Install systemd user units and Nautilus extension paths via package rules in `packaging/debian/kitelink.install`
+- [x] T041 [US5] Declare rclone dependency or bundle strategy + minimum version gate in `packaging/debian/control` / docs
+- [x] T042 [US5] Add package build instructions in `packaging/README.md`
+- [x] T043 [US5] Smoke-test install script/checklist linked from `specs/001-kitelink-mvp/quickstart.md` scenario Q5
 
 **Checkpoint**: US5 packaging path documented and reproducible
 
@@ -148,11 +148,11 @@ description: "Task list for Kitelink Phase 1 MVP"
 
 **Purpose**: Hardening across stories
 
-- [ ] T044 [P] Verify RC/control bind is localhost-only; add regression check in `tests/unit/test_bind_localhost.py`
-- [ ] T045 [P] Update root `README.md` with build/run pointers to specs and packaging
-- [ ] T046 Align in-app strings with brand name Kitelink; keep hooks for `assets/brand/` palette
-- [ ] T047 Run full `specs/001-kitelink-mvp/quickstart.md` on a VM and file gaps
-- [ ] T048 Add Phase 2 adapter boundary note in `src/kitelink/service/adapters/README.md` (how to replace rclone)
+- [x] T044 [P] Verify RC/control bind is localhost-only; add regression check in `tests/unit/test_bind_localhost.py`
+- [x] T045 [P] Update root `README.md` with build/run pointers to specs and packaging
+- [x] T046 Align in-app strings with brand name Kitelink; keep hooks for `assets/brand/` palette
+- [x] T047 Run full `specs/001-kitelink-mvp/quickstart.md` on a VM and file gaps
+- [x] T048 Add Phase 2 adapter boundary note in `src/kitelink/service/adapters/README.md` (how to replace rclone)
 
 ---
 

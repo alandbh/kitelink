@@ -1,0 +1,7 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: kitelink
+Source: https://github.com/alandbh/kitelink
+
+Files: *
+Copyright: Kitelink contributors
+License: MIT

@@ -1,0 +1,22 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE = 1
+export PYBUILD_NAME = kitelink
+
+%:
+	dh $@ --with python3 --buildsystem=pybuild
+
+override_dh_auto_install:
+	dh_auto_install
+	# Install systemd user unit, desktop entry, nautilus extension, emblems
+	install -D -m 0644 systemd/user/kitelink.service \
+		debian/kitelink/usr/lib/systemd/user/kitelink.service
+	install -D -m 0644 packaging/debian/kitelink.desktop \
+		debian/kitelink/usr/share/applications/kitelink.desktop
+	install -D -m 0644 extensions/nautilus/kitelink.py \
+		debian/kitelink/usr/share/nautilus-python/extensions/kitelink.py
+	install -d debian/kitelink/usr/share/icons/hicolor/scalable/emblems
+	install -m 0644 assets/brand/emblems/*.svg \
+		debian/kitelink/usr/share/icons/hicolor/scalable/emblems/
+	install -D -m 0644 assets/brand/logo/icon-positive.svg \
+		debian/kitelink/usr/share/icons/hicolor/scalable/apps/kitelink.svg

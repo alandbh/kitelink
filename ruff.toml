@@ -1,0 +1,2 @@
+# Ruff config lives primarily in pyproject.toml; this file keeps CLI discovery explicit.
+extend = "pyproject.toml"

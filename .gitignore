@@ -22,3 +22,14 @@ debian/tmp/
 
 # Brand source archives (extracted SVG/PNG are committed instead)
 assets/brand/logo/*.zip
+
+# Python tooling
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+venv/
+*.log
+*.tmp
+*.swp
+.vscode/
+.idea/

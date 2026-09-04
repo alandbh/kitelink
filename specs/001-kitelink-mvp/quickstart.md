@@ -8,8 +8,11 @@
 - Zorin OS or Ubuntu LTS with GNOME Files (Nautilus)
 - FUSE 3, systemd user session, libsecret/GNOME Keyring unlocked
 - Google account available for OAuth Test users (or verified app)
-- Built `.deb` or editable install from this repo
+- Built `.deb` or editable install from this repo (see [`packaging/README.md`](../../packaging/README.md))
+- `KITELINK_GOOGLE_CLIENT_ID` / `KITELINK_GOOGLE_CLIENT_SECRET` set for the user session
 - Network access to Google
+
+Printable result sheet: [vm-validation-checklist.md](./vm-validation-checklist.md) (scenario Q5).
 
 ## Setup
 

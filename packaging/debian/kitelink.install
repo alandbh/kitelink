@@ -1,0 +1,5 @@
+usr/lib/systemd/user/kitelink.service
+usr/share/applications/kitelink.desktop
+usr/share/nautilus-python/extensions/kitelink.py
+usr/share/icons/hicolor/scalable/emblems/
+usr/share/icons/hicolor/scalable/apps/kitelink.svg

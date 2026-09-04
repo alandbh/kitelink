@@ -6,35 +6,45 @@ Kitelink targets a Google Drive Desktop–like experience on GNOME (Zorin OS / N
 
 ## Status
 
-Early product definition. See the full product requirements in [`PRD.md`](PRD.md).
+Phase 1 MVP **implementation in progress** (Spec Kit feature `001-kitelink-mvp`). Product requirements: [`PRD.md`](PRD.md).
 
-Development follows **Spec-Driven Development** via [GitHub Spec Kit](https://github.com/github/spec-kit) (constitution → specify → plan → tasks → implement).
+## Develop
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+
+# Terminal A — user service (D-Bus)
+export KITELINK_GOOGLE_CLIENT_ID="..."
+export KITELINK_GOOGLE_CLIENT_SECRET="..."
+kitelink-service
+
+# Terminal B — UI
+kitelink
+```
+
+Also requires system packages: `rclone` (≥ 1.60), `fuse3`, `python3-gi`, GTK 4 / libadwaita typelibs (`gir1.2-gtk-4.0`, `gir1.2-adw-1`), and `python3-nautilus` for emblems. PyGObject is expected from the distro (`python3-gi`), not necessarily from pip.
+
+```bash
+pytest
+```
+
+## Package
+
+See [`packaging/README.md`](packaging/README.md) for `.deb` build and install notes.
 
 ## Docs
 
 | Document | Purpose |
 |----------|---------|
-| [PRD.md](PRD.md) | Product requirements (source of truth) |
-| [specs/001-kitelink-mvp/](specs/001-kitelink-mvp/) | Phase 1 Spec Kit feature (spec, plan, tasks) |
-| [.specify/memory/constitution.md](.specify/memory/constitution.md) | Project constitution |
-| [assets/brand/](assets/brand/) | Logo / palette drop zone |
-| [readme-1.md](readme-1.md) | rclone prototype notes |
-| [readme-2.md](readme-2.md) | Feasibility / stack notes |
+| [PRD.md](PRD.md) | Product requirements |
+| [specs/001-kitelink-mvp/](specs/001-kitelink-mvp/) | Spec, plan, tasks, contracts |
+| [specs/001-kitelink-mvp/quickstart.md](specs/001-kitelink-mvp/quickstart.md) | Manual validation |
+| [packaging/README.md](packaging/README.md) | Debian packaging |
+| [assets/brand/](assets/brand/) | Logo, palette, emblems |
 
-### Spec Kit workflow (Cursor)
+## Strategy
 
-Skills are installed under `.cursor/skills/`. Typical order:
-
-1. `/speckit-constitution` (done → v1.0.0)
-2. `/speckit-specify` (done → `specs/001-kitelink-mvp`)
-3. `/speckit-plan` / `/speckit-tasks` (done)
-4. `/speckit-implement` when ready to build code
-
-## Strategy (short)
-
-1. **Phase 1 (MVP):** GTK shell + Nautilus extension + tray UX on top of `rclone mount`.
-2. **Phase 2:** Replace rclone with a Kitelink FUSE daemon + Drive API behind the same D-Bus contract.
-
-## Brand assets
-
-Drop logo SVG/PNG and the final palette into [`assets/brand/`](assets/brand/). Placeholder palette notes live in [`assets/brand/palette.md`](assets/brand/palette.md).
+1. **Phase 1:** GTK + Nautilus extension + tray on `rclone mount` behind D-Bus `org.kitelink.Service1`.
+2. **Phase 2:** Native FUSE/Drive API adapter replacing rclone (same D-Bus contract).
