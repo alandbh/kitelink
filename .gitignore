@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+dist/
+build/
+*.egg-info/
+
+# Secrets / local auth
+.env
+.env.*
+**/rclone.conf
+*.token
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Packaging build trees
+debian/tmp/
+*.deb
+
+# Brand source archives (extracted SVG/PNG are committed instead)
+assets/brand/logo/*.zip

@@ -1,0 +1,87 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+ "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<!--
+  Kitelink Phase 1 D-Bus contract (sketch).
+  Bus name: org.kitelink.Service
+  Object path: /org/kitelink/Service
+  Interface: org.kitelink.Service1
+-->
+<node>
+  <interface name="org.kitelink.Service1">
+    <!-- Auth -->
+    <method name="GetAuthStatus">
+      <arg type="s" name="auth_state" direction="out"/>
+      <arg type="s" name="account_email" direction="out"/>
+      <arg type="s" name="last_error" direction="out"/>
+    </method>
+    <method name="StartSignIn">
+      <arg type="b" name="accepted" direction="out"/>
+      <arg type="s" name="message" direction="out"/>
+    </method>
+    <method name="SignOut">
+      <arg type="b" name="ok" direction="out"/>
+      <arg type="s" name="message" direction="out"/>
+    </method>
+
+    <!-- Mount / health -->
+    <method name="GetConnectionStatus">
+      <arg type="s" name="connection_state" direction="out"/>
+      <arg type="s" name="mountpoint" direction="out"/>
+      <arg type="s" name="last_error" direction="out"/>
+    </method>
+    <method name="OpenMountpoint">
+      <arg type="b" name="ok" direction="out"/>
+    </method>
+    <method name="RestartConnection">
+      <arg type="b" name="ok" direction="out"/>
+      <arg type="s" name="message" direction="out"/>
+    </method>
+
+    <!-- Emblems / availability -->
+    <method name="GetPathState">
+      <arg type="s" name="path" direction="in"/>
+      <arg type="s" name="state" direction="out"/>
+      <!-- cloud_or_unknown | syncing | locally_available | error -->
+      <arg type="s" name="confidence" direction="out"/>
+      <!-- low | medium -->
+    </method>
+
+    <!-- Transfers (filtered / aggregated) -->
+    <method name="GetAggregatedTransfers">
+      <arg type="i" name="active_count" direction="out"/>
+      <arg type="s" name="headline" direction="out"/>
+      <arg type="s" name="primary_name" direction="out"/>
+      <arg type="x" name="primary_bytes_done" direction="out"/>
+      <arg type="x" name="primary_bytes_total" direction="out"/>
+      <arg type="d" name="primary_speed_bps" direction="out"/>
+    </method>
+
+    <!-- Preferences -->
+    <method name="GetPreferences">
+      <arg type="s" name="json" direction="out"/>
+    </method>
+    <method name="SetPreferences">
+      <arg type="s" name="json" direction="in"/>
+      <arg type="b" name="ok" direction="out"/>
+      <arg type="s" name="message" direction="out"/>
+    </method>
+
+    <!-- Diagnostics (user-safe) -->
+    <method name="GetDiagnostics">
+      <arg type="s" name="json" direction="out"/>
+    </method>
+
+    <!-- Signals -->
+    <signal name="StatusChanged">
+      <arg type="s" name="connection_state"/>
+      <arg type="s" name="auth_state"/>
+    </signal>
+    <signal name="TransfersChanged">
+      <arg type="i" name="active_count"/>
+      <arg type="s" name="headline"/>
+    </signal>
+    <signal name="PathStateMayHaveChanged">
+      <arg type="s" name="path_prefix"/>
+    </signal>
+  </interface>
+</node>
