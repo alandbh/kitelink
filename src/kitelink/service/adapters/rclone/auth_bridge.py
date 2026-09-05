@@ -38,6 +38,7 @@ def write_remote_from_tokens(tokens: dict[str, Any]) -> Path:
     )
     refresh = tokens.get("refresh_token") or ""
     access = tokens.get("token") or ""
+    expiry = tokens.get("token_expiry") or "0001-01-01T00:00:00Z"
 
     # rclone Google Drive token JSON format
     token_json = (
@@ -45,7 +46,7 @@ def write_remote_from_tokens(tokens: dict[str, Any]) -> Path:
         f'"access_token":"{access}",'
         f'"token_type":"Bearer",'
         f'"refresh_token":"{refresh}",'
-        '"expiry":"0001-01-01T00:00:00Z"'
+        f'"expiry":"{expiry}"'
         "}"
     )
 

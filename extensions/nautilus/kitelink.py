@@ -16,12 +16,12 @@ BUS_NAME = "org.kitelink.Service"
 OBJECT_PATH = "/org/kitelink/Service"
 INTERFACE = "org.kitelink.Service1"
 
-# Map states to emblem names installed under hicolor / kitelink emblems
+# Nautilus looks up "emblem-<name>" (and "<name>-symbolic" on dark themes).
 EMBLEM_MAP = {
-    "locally_available": "kitelink-emblem-local",
-    "syncing": "kitelink-emblem-sync",
-    "cloud_or_unknown": "kitelink-emblem-cloud",
-    "error": "kitelink-emblem-error",
+    "locally_available": "kitelink-local",
+    "syncing": "kitelink-sync",
+    "cloud_or_unknown": "kitelink-cloud",
+    "error": "kitelink-error",
 }
 
 

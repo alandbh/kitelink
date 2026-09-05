@@ -63,6 +63,53 @@ class OAuthManager:
         email = data.get("account_email")
         return str(email) if email else None
 
+    def refresh_tokens(self) -> dict[str, Any]:
+        """Refresh a stored access token so rclone can mount without a new browser login."""
+        data = self.load_tokens()
+        if not data or not data.get("refresh_token"):
+            raise OAuthError("No stored refresh token. Sign in with Google again.")
+
+        from google.auth.transport.requests import Request
+        from google.oauth2.credentials import Credentials
+
+        client_id = (data.get("client_id") or os.environ.get("KITELINK_GOOGLE_CLIENT_ID", "")).strip()
+        client_secret = (
+            data.get("client_secret") or os.environ.get("KITELINK_GOOGLE_CLIENT_SECRET", "")
+        ).strip()
+        if not client_id or not client_secret:
+            raise OAuthError(
+                "Stored credentials are missing the OAuth client. Sign in with Google again."
+            )
+        creds = Credentials(
+            token=data.get("token"),
+            refresh_token=data["refresh_token"],
+            token_uri=data.get("token_uri") or "https://oauth2.googleapis.com/token",
+            client_id=client_id,
+            client_secret=client_secret,
+            scopes=data.get("scopes") or DEFAULT_SCOPES,
+        )
+        creds.refresh(Request())
+        expiry = None
+        if creds.expiry is not None:
+            exp = creds.expiry
+            if exp.tzinfo is None:
+                from datetime import UTC
+
+                exp = exp.replace(tzinfo=UTC)
+            expiry = exp.strftime("%Y-%m-%dT%H:%M:%SZ")
+        updated = {
+            **data,
+            "token": creds.token,
+            "refresh_token": creds.refresh_token or data["refresh_token"],
+            "token_uri": creds.token_uri,
+            "client_id": creds.client_id,
+            "client_secret": creds.client_secret,
+            "scopes": list(creds.scopes or DEFAULT_SCOPES),
+            "token_expiry": expiry,
+        }
+        self.store.save(updated)
+        return updated
+
     def start_sign_in_async(
         self,
         on_success: Callable[[dict[str, Any]], None],

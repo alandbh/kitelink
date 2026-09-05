@@ -250,10 +250,19 @@ class KitelinkCore:
 
     def bootstrap_if_signed_in(self) -> None:
         self.session_mgr.refresh_from_store()
-        if self.session.auth_state == AuthState.SIGNED_IN:
-            if not self.rclone.is_mount_active():
-                self.start_mount()
-            else:
-                self.connection.connection_state = ConnectionState.CONNECTED
-                self.start_monitor()
-                self.emit_status_changed()
+        if self.session.auth_state != AuthState.SIGNED_IN:
+            return
+        try:
+            tokens = self.oauth.refresh_tokens()
+            self.rclone.apply_tokens(tokens)
+        except Exception as exc:  # noqa: BLE001
+            log.warning("Could not refresh stored tokens: %s", exc)
+            tokens = self.oauth.load_tokens()
+            if tokens:
+                self.rclone.apply_tokens(tokens)
+        if not self.rclone.is_mount_active():
+            self.start_mount()
+        else:
+            self.connection.connection_state = ConnectionState.CONNECTED
+            self.start_monitor()
+            self.emit_status_changed()
