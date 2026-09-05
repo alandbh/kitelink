@@ -9,7 +9,6 @@ import time
 
 from kitelink.app.brand import apply_brand_css
 from kitelink.app.client import ServiceClient
-from kitelink.app.help_copy import APP_NAME
 from kitelink.app.onboarding import build_onboarding
 from kitelink.app.tray import TrayController
 from kitelink.util.logging import get_logger
@@ -19,7 +18,6 @@ log = get_logger("kitelink.app")
 
 def ensure_user_service() -> None:
     """Best-effort: start kitelink-service via systemd --user or spawn."""
-    # Already running (e.g. terminal session) — do not spawn a duplicate.
     try:
         ServiceClient()
         return
@@ -34,7 +32,6 @@ def ensure_user_service() -> None:
     )
     if result.returncode == 0:
         return
-    # Fallback: spawn service if entrypoint is on PATH
     if shutil.which("kitelink-service"):
         subprocess.Popen(
             ["kitelink-service"],
@@ -70,29 +67,63 @@ def main(argv: list[str] | None = None) -> int:
     client = wait_for_service()
 
     app = Adw.Application(application_id="org.kitelink.App")
+    session: dict = {"tray": None, "client": client}
 
-    def on_activate(application) -> None:  # type: ignore[no-untyped-def]
-        apply_brand_css()
-        if client is None:
-            # Show onboarding that explains service failure
-            win = build_onboarding(application, _BrokenClient())
-            win.present()
-            return
-        try:
-            auth_state, _email, _err = client.get_auth_status()
-        except Exception:
-            auth_state = "signed_out"
-
-        tray = TrayController(application, client)
-        if auth_state == "signed_in":
-            tray.present()
-            return
+    def show_onboarding(*, unavailable: bool = False) -> None:
+        cl = session["client"]
 
         def after_sign_in() -> None:
-            tray.present()
+            show_tray()
 
-        win = build_onboarding(application, client, on_signed_in=after_sign_in)
+        def retry_service() -> None:
+            ensure_user_service()
+            session["client"] = wait_for_service(timeout=6.0)
+            app.activate()
+
+        win = build_onboarding(
+            app,
+            cl or _BrokenClient(),
+            on_signed_in=after_sign_in,
+            service_unavailable=unavailable,
+            on_retry_service=retry_service,
+        )
         win.present()
+
+    def show_tray() -> None:
+        cl = session["client"]
+        if cl is None:
+            show_onboarding(unavailable=True)
+            return
+        if session["tray"] is None:
+            session["tray"] = TrayController(app, cl, on_sign_out=after_sign_out)
+        session["tray"].present()
+
+    def after_sign_out() -> None:
+        tray = session["tray"]
+        if tray is not None:
+            tray.hide()
+            session["tray"] = None
+        show_onboarding(unavailable=False)
+
+    def on_activate(application) -> None:  # type: ignore[no-untyped-def]
+        _ = application
+        apply_brand_css()
+        cl = session["client"]
+        if cl is None:
+            ensure_user_service()
+            session["client"] = wait_for_service(timeout=4.0)
+            cl = session["client"]
+        if cl is None:
+            show_onboarding(unavailable=True)
+            return
+        try:
+            auth_state, _email, _err = cl.get_auth_status()
+        except Exception:
+            auth_state = "signed_out"
+        if auth_state == "signed_in":
+            show_tray()
+            return
+        show_onboarding(unavailable=False)
 
     app.connect("activate", on_activate)
     return app.run(sys.argv)
@@ -100,7 +131,13 @@ def main(argv: list[str] | None = None) -> int:
 
 class _BrokenClient:
     def start_sign_in(self) -> tuple[bool, str]:
-        return False, "Kitelink service is not running. Try: systemctl --user start kitelink.service"
+        return False, "O serviço do Kitelink não está em execução."
+
+    def get_auth_status(self) -> tuple[str, str, str]:
+        return "signed_out", "", "service_unavailable"
+
+    def get_connection_status(self) -> tuple[str, str, str]:
+        return "stopped", "", ""
 
 
 if __name__ == "__main__":
