@@ -49,6 +49,7 @@ class KitelinkCore:
         self._status_listeners: list[Callable[[str, str], None]] = []
         self._transfer_listeners: list[Callable[[int, str], None]] = []
         self._path_listeners: list[Callable[[str], None]] = []
+        self._vfs_cached_files: int = -1
         self.session_mgr.refresh_from_store()
 
     def push_event(self, message: str) -> None:
@@ -131,10 +132,21 @@ class KitelinkCore:
                 or view.headline != self.transfers.headline
             )
             self.transfers = view
+            cache_changed = False
+            if active:
+                try:
+                    cached = self.rclone.cached_file_count()
+                except Exception:  # noqa: BLE001
+                    cached = self._vfs_cached_files
+                if cached != self._vfs_cached_files:
+                    cache_changed = self._vfs_cached_files != -1 or cached > 0
+                    self._vfs_cached_files = cached
         if changed:
             self.emit_transfers_changed()
             if view.active_count:
                 self._path_notify(self.connection.mountpoint)
+        if cache_changed:
+            self._path_notify(self.connection.mountpoint)
 
     def _path_notify(self, prefix: str) -> None:
         for cb in list(self._path_listeners):

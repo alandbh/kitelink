@@ -40,6 +40,13 @@ class RcloneAdapter:
         self._transferring_names = {t.id for t in items}
         return items
 
+    def cached_file_count(self) -> int:
+        stats = self.rc.call("vfs/stats", timeout=1.0)
+        disk = stats.get("diskCache")
+        if not isinstance(disk, dict):
+            return 0
+        return int(disk.get("files") or 0)
+
     def path_state(self, path: str, mountpoint: str | None = None) -> tuple[PathState, Confidence]:
         return path_state_mod.path_state(
             path,
