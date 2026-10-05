@@ -17,14 +17,15 @@ def open_emblem_help(parent) -> None:  # type: ignore[no-untyped-def]
 
     dialog = Adw.Window(title=copy.S21_TITLE, transient_for=parent, modal=True)
     dialog.set_default_size(420, 360)
+    content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+    header = Adw.HeaderBar()
+    header.set_decoration_layout(":close")
+    content.append(header)
     box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
     box.set_margin_top(20)
     box.set_margin_bottom(20)
     box.set_margin_start(20)
     box.set_margin_end(20)
-    title = Gtk.Label(label=copy.S21_TITLE)
-    title.add_css_class("title-2")
-    box.append(title)
     for line in (copy.S21_CLOUD, copy.S21_SYNC, copy.S21_LOCAL, copy.S21_ERROR):
         lbl = Gtk.Label(label=line)
         lbl.set_wrap(True)
@@ -34,7 +35,8 @@ def open_emblem_help(parent) -> None:  # type: ignore[no-untyped-def]
     honest.set_wrap(True)
     honest.add_css_class("dim-label")
     box.append(honest)
-    dialog.set_content(box)
+    content.append(box)
+    dialog.set_content(content)
     dialog.present()
 
 
